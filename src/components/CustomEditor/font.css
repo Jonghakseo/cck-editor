@@ -1,0 +1,39 @@
+.nanumsquare {
+    font-family: 'NanumSquare', sans-serif !important;
+}
+
+@font-face {
+    font-family: "고운밤";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Oneprettynight.woff")
+    format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "범솜체";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_02@1.0/Bumsom.woff")
+    format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: '왼손잡이도 예뻐';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_09@1.0/Pretty_Left_handed.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: '암스테르담';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_01@1.0/Amsterdam.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: '성실체';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_06@1.0/Hardworking.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

@@ -1,11 +1,9 @@
 import React, { useRef } from "react";
-// import ClassicEditor  from "../../ckeditor/build/ckeditor";
 // @ts-ignore
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
 import { MOCK_DATA } from "./mock/data";
-// @ts-ignore
-
+import "./font.css";
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
 export interface Props {}
@@ -15,8 +13,20 @@ const CustomEditor: React.FC<Props> = (props: Props) => {
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
-    alignment: {
-      options: ["left", "center", "right"],
+    fontFamily: {
+      options: [
+        "NanumSquare",
+        "고운밤",
+        "범솜체",
+        "왼손잡이도 예뻐",
+        "암스테르담",
+        "성실체",
+      ],
+    },
+    video: {
+      upload: {
+        types: ["mp4", "mov", "avi"],
+      },
     },
     toolbar: {
       items: [
@@ -41,7 +51,8 @@ const CustomEditor: React.FC<Props> = (props: Props) => {
         "insertTable",
         "link",
         "uploadImage",
-        //TODO video
+        "mediaEmbed",
+        "videoUpload",
       ],
       shouldNotGroupWhenFull: true,
     },

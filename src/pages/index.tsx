@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import CustomEditor from "../components/CustomEditor";
 import styled from "styled-components";
 
