@@ -18,7 +18,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const [saveCount, setSaveCount] = useState<number>(
     () => Number(window.localStorage.getItem("cckEditorSaveCount")) || 0
   );
-  const [autoList, setAutoList] = useState<string[]>([])
+  const [autoList, setAutoList] = useState<string[]>([]);
 
   const handleSave = () => {
     setSaveCount((prev) => prev + 1);
@@ -34,19 +34,20 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const handleTagChange = async ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
-    console.log(value)
-    if (value){
+    console.log(value);
+    if (value) {
       try {
-        const autoList = await checkHashKeyword(value)
+        const autoList = await checkHashKeyword(value);
         setAutoList(autoList);
       } catch (e) {
         console.error(e);
       }
-    }else {
-      setAutoList([])
+    } else {
+      setAutoList([]);
     }
   };
-  console.log(autoList)
+  console.log(autoList);
+
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -65,9 +66,29 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         types: ["mp4", "mov", "avi"],
       },
     },
+    musicSelect: {
+      // @ts-ignore
+      onSelect: ({ name, src }) => {
+        alert(`${name}${src}`);
+      },
+      lists: [
+        {
+          name: "평화로운 오후",
+          src: "https://www.w3schools.com/tags/horse.mp3",
+        },
+        {
+          name: "귀여운 망아지",
+          src: "https://www.w3schools.com/tags/horse.mp3",
+        },
+        {
+          name: "두런두런 말소리",
+          src: "https://www.w3schools.com/tags/horse.mp3",
+        },
+      ],
+    },
     toolbar: {
       items: [
-        // "heading",
+        "musicSelect",
         "fontfamily",
         "fontsize",
         "|",
@@ -93,7 +114,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       ],
       shouldNotGroupWhenFull: true,
     },
-    placeholder: "내용을 입력해주세요",
+    placeholder: "내용",
     // 업로드로더 API 요청 파라미터 전송
     uploadInfo: "pic",
   };

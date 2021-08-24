@@ -25,7 +25,7 @@ export const checkHashKeyword = async (keyword:string):Promise<string[]> =>{
         setTimeout(()=>{
             resolve(MOCK_TAGS.filter((tag)=>{
                 return tag.includes(keyword)
-            }))
+            }).slice(0,3))
         },400)
     })
 }
