@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 // @ts-ignore
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
@@ -12,8 +12,27 @@ export interface Props {
   onChange?: (data: any) => any;
 }
 
+const SAMPLE_SONGS = [
+  {
+    name: "시끄러운 알람소리",
+    src: "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg",
+  },
+  {
+    name: "귀여운 망아지",
+    src: "https://www.w3schools.com/tags/horse.mp3",
+  },
+  {
+    name: "잔잔한 피아노",
+    src: "https://www.kozco.com/tech/piano2.wav",
+  },
+];
+
 const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
-  const editorRef = useRef(null);
+  const editorRef = useRef<null | HTMLAudioElement>(null);
+  const audioRef = useRef(null);
+  const musicListRef = useRef(null);
+  const [selectedSongName, setSelectedSongName] = useState("")
+
   const [data, setData] = useState(MOCK_DATA);
   const [saveCount, setSaveCount] = useState<number>(
     () => Number(window.localStorage.getItem("cckEditorSaveCount")) || 0
@@ -48,6 +67,38 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   };
   console.log(autoList);
 
+  useEffect(() => {
+    let spans: null | Element[] = null;
+
+    function playMusic(e: any) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const songName = e.target?.innerText;
+      const foundSong = SAMPLE_SONGS.find(({ name }) => name === songName);
+      if (audioRef.current) {
+        audioRef.current.src = foundSong?.src;
+        audioRef.current.play();
+      }
+      console.log(foundSong);
+    }
+
+    if (!musicListRef.current) {
+      spans = Array.from(
+        document.querySelectorAll(
+          ".ck.ck-dropdown.ckeditor5-musicSelect-dropdown>div>ul>li>button>span"
+        )
+      );
+      if (spans) {
+        spans.forEach((span) => span.addEventListener("click", playMusic));
+      }
+      console.log(spans);
+
+      return () => {
+        if (spans)
+          spans.forEach((span) => span.removeEventListener("click", playMusic));
+      };
+    }
+  }, [musicListRef]);
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -69,22 +120,11 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     musicSelect: {
       // @ts-ignore
       onSelect: ({ name, src }) => {
+        setSelectedSongName(name)
+        //TODO 음악 선택 후 처리
         alert(`${name}${src}`);
       },
-      lists: [
-        {
-          name: "평화로운 오후",
-          src: "https://www.w3schools.com/tags/horse.mp3",
-        },
-        {
-          name: "귀여운 망아지",
-          src: "https://www.w3schools.com/tags/horse.mp3",
-        },
-        {
-          name: "두런두런 말소리",
-          src: "https://www.w3schools.com/tags/horse.mp3",
-        },
-      ],
+      lists: SAMPLE_SONGS,
     },
     toolbar: {
       items: [
@@ -121,6 +161,8 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
 
   return (
     <div>
+      <audio ref={audioRef} />
+      <p>{selectedSongName}</p>
       <CKEditor
         ref={editorRef}
         editor={ClassicEditor}

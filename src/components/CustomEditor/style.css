@@ -1,5 +1,52 @@
-.autoTagList{
-    top: 0;
-    right: 0;
-    position: absolute;
+.autoTagList {
+  top: 0;
+  right: 0;
+  position: absolute;
+}
+
+
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li {
+  display: flex !important;
+  height: 40px !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  position: relative !important;
+  width: 100% !important;
+  background-color: #eeeeee !important;
+}
+
+span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
+  display: none !important;
+}
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button {
+  border: none !important;
+  overflow-y: visible;
+  overflow-x: visible;
+  width: 12px !important;
+  max-height: 12px !important;
+  height: 24px !important;
+  margin-left: auto !important;
+  background: center / contain no-repeat url("./icon/check.svg") !important;
+
+}
+
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button > span {
+  display: flex !important;
+  align-items: center !important;
+  position: absolute;
+  left: -120px;
+  width: 156px !important;
+  pointer-events: none !important;
+}
+
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button :after {
+  content: "";
+  cursor: pointer;
+  pointer-events: initial;
+  overflow: hidden;
+  position: absolute;
+  right: 40px;
+  background: center / cover no-repeat url("./icon/play.svg") !important;
+  width: 10px !important;
+  height: 10px !important;
 }
