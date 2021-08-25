@@ -76,7 +76,9 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       const songName = e.target?.innerText;
       const foundSong = SAMPLE_SONGS.find(({ name }) => name === songName);
       if (audioRef.current) {
+        // @ts-ignore
         audioRef.current.src = foundSong?.src;
+        // @ts-ignore
         audioRef.current.play();
       }
       console.log(foundSong);
