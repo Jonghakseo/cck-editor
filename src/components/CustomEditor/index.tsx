@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 // @ts-ignore
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
@@ -6,6 +6,10 @@ import { MOCK_DATA } from "./mock/data";
 import "./font.css";
 import "./style.css";
 import { checkHashKeyword } from "../../apis/hashTag";
+import useMusicSelect from "./hooks/useMusicSelect";
+import useTempSave from "./hooks/useTempSave";
+import useAutoComplete from "./hooks/useAutoComplete";
+
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
 export interface Props {
@@ -29,78 +33,14 @@ const SAMPLE_SONGS = [
 
 const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const editorRef = useRef<null | HTMLAudioElement>(null);
-  const audioRef = useRef(null);
-  const musicListRef = useRef(null);
-  const [selectedSongName, setSelectedSongName] = useState("")
+  const { audioRef, selectedSongName, handleMusicSelect } =
+    useMusicSelect(SAMPLE_SONGS);
 
   const [data, setData] = useState(MOCK_DATA);
-  const [saveCount, setSaveCount] = useState<number>(
-    () => Number(window.localStorage.getItem("cckEditorSaveCount")) || 0
-  );
-  const [autoList, setAutoList] = useState<string[]>([]);
 
-  const handleSave = () => {
-    setSaveCount((prev) => prev + 1);
-    window.localStorage.setItem("cckEditorSaveCount", `${saveCount + 1}`);
-    window.localStorage.setItem("cckEditor", data.toString());
-    alert("임시 저장 되었습니다.");
-  };
+  const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
 
-  const getSaveData = () => {
-    setData(window.localStorage.getItem("cckEditor") || "");
-  };
-
-  const handleTagChange = async ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    console.log(value);
-    if (value) {
-      try {
-        const autoList = await checkHashKeyword(value);
-        setAutoList(autoList);
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      setAutoList([]);
-    }
-  };
-  console.log(autoList);
-
-  useEffect(() => {
-    let spans: null | Element[] = null;
-
-    function playMusic(e: any) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      const songName = e.target?.innerText;
-      const foundSong = SAMPLE_SONGS.find(({ name }) => name === songName);
-      if (audioRef.current) {
-        // @ts-ignore
-        audioRef.current.src = foundSong?.src;
-        // @ts-ignore
-        audioRef.current.play();
-      }
-      console.log(foundSong);
-    }
-
-    if (!musicListRef.current) {
-      spans = Array.from(
-        document.querySelectorAll(
-          ".ck.ck-dropdown.ckeditor5-musicSelect-dropdown>div>ul>li>button>span"
-        )
-      );
-      if (spans) {
-        spans.forEach((span) => span.addEventListener("click", playMusic));
-      }
-      console.log(spans);
-
-      return () => {
-        if (spans)
-          spans.forEach((span) => span.removeEventListener("click", playMusic));
-      };
-    }
-  }, [musicListRef]);
+  const { handleTagChange, autoList } = useAutoComplete();
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -121,11 +61,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     },
     musicSelect: {
       // @ts-ignore
-      onSelect: ({ name, src }) => {
-        setSelectedSongName(name)
-        //TODO 음악 선택 후 처리
-        alert(`${name}${src}`);
-      },
+      onSelect: handleMusicSelect,
       lists: SAMPLE_SONGS,
     },
     toolbar: {

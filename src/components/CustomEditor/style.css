@@ -18,6 +18,9 @@
 span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
   display: none !important;
 }
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div{
+  min-width: 180px;
+}
 .ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button {
   border: none !important;
   overflow-y: visible;
@@ -34,7 +37,7 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
   display: flex !important;
   align-items: center !important;
   position: absolute;
-  left: -120px;
+  left: -140px;
   width: 156px !important;
   pointer-events: none !important;
 }
@@ -45,7 +48,7 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
   pointer-events: initial;
   overflow: hidden;
   position: absolute;
-  right: 40px;
+  right: 20px;
   background: center / cover no-repeat url("./icon/play.svg") !important;
   width: 10px !important;
   height: 10px !important;
