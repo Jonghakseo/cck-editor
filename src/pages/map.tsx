@@ -16,7 +16,7 @@ const MapPage: React.FC<Props> = (props: Props) => {
   }, []);
   return (
     <>
-      <div id={"map"} />
+      <div id={"map"} style={{ width: "400px", height: "400px" }} />
       map
     </>
   );
