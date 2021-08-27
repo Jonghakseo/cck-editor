@@ -44,6 +44,15 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
+    addLocation: {
+      userLocation: "신당동",
+      onClickUserLocation: () => {
+        console.log("hi");
+      },
+      onClickOpenMap: () => {
+        console.log("hello");
+      },
+    },
     fontFamily: {
       options: [
         "NanumSquare",
@@ -66,6 +75,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     },
     toolbar: {
       items: [
+        "addLocation",
         "musicSelect",
         "fontfamily",
         "fontsize",
