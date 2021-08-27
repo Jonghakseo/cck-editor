@@ -1,14 +1,15 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, {useRef, useState} from "react";
 // @ts-ignore
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
-import { MOCK_DATA } from "./mock/data";
+import {CKEditor} from "@ckeditor/ckeditor5-react";
+import {EditorUploadAdapterPlugin} from "./plugins/EditorUploadAdapterPlugin";
+import {MOCK_DATA} from "./mock/data";
 import "./font.css";
 import "./style.css";
-import { checkHashKeyword } from "../../apis/hashTag";
 import useMusicSelect from "./hooks/useMusicSelect";
 import useTempSave from "./hooks/useTempSave";
 import useAutoComplete from "./hooks/useAutoComplete";
+import URLS from "../../routes/urls";
+import useAddLocation from "./hooks/useAddLocation";
 
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
@@ -39,6 +40,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const [data, setData] = useState(MOCK_DATA);
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
+  useAddLocation()
 
   const { handleTagChange, autoList } = useAutoComplete();
 
@@ -46,11 +48,15 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     extraPlugins: [EditorUploadAdapterPlugin],
     addLocation: {
       userLocation: "신당동",
-      onClickUserLocation: () => {
-        console.log("hi");
+      onClickUserLocation: ({ value }: any) => {
+        alert(value);
       },
       onClickOpenMap: () => {
-        console.log("hello");
+        window.open(
+          URLS.MAP,
+          "title",
+          "width=600, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes"
+        );
       },
     },
     fontFamily: {
