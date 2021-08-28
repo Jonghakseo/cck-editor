@@ -6,8 +6,9 @@ const TIMEOUT_MILLS = 200000;
 let call;
 
 let axiosInterceptor: any = null;
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 export let axiosInstance: AxiosInstance;
+axiosInstance = axios.create();
 
 export enum Method {
   GET = "get",
@@ -31,8 +32,9 @@ export const request = (params: RequestParams) => {
   let config: AxiosRequestConfig = {
     timeout: TIMEOUT_MILLS,
     headers: {
-      "Cache-Control": "no-cache",
-      Pragma: "no-cache",
+      Accept: 'application/json',
+      // "Cache-Control": "no-cache",
+      // Pragma: "no-cache",
     },
     params: {},
     paramsSerializer: (params: any) => {
@@ -40,8 +42,8 @@ export const request = (params: RequestParams) => {
     },
   };
 
-  call = axios.CancelToken.source();
-  config.cancelToken = call.token;
+  // call = axios.CancelToken.source();
+  // config.cancelToken = call.token;
 
   if (headers) {
     config.headers = {
