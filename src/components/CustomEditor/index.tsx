@@ -40,7 +40,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const [data, setData] = useState(MOCK_DATA);
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
-  useAddLocation()
+  const {location} = useAddLocation()
 
   const { handleTagChange, autoList } = useAutoComplete();
 
@@ -54,8 +54,8 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       onClickOpenMap: () => {
         window.open(
           URLS.MAP,
-          "title",
-          "width=600, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes"
+          "map",
+          "width=940, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes"
         );
       },
     },
@@ -117,6 +117,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     <div>
       <audio ref={audioRef} />
       <p>{selectedSongName}</p>
+      <p>{location?.title}</p>
       <CKEditor
         ref={editorRef}
         editor={ClassicEditor}
