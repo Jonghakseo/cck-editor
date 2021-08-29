@@ -31,13 +31,15 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const editorRef = useRef<null | HTMLAudioElement>(null);
   const audioRef = useRef(null);
   const musicListRef = useRef(null);
-  const [selectedSongName, setSelectedSongName] = useState("")
+  const [selectedSongName, setSelectedSongName] = useState("");
 
   const [data, setData] = useState(MOCK_DATA);
   const [saveCount, setSaveCount] = useState<number>(
     () => Number(window.localStorage.getItem("cckEditorSaveCount")) || 0
   );
   const [autoList, setAutoList] = useState<string[]>([]);
+  const [tagText, setTagText] = useState<string>("");
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const handleSave = () => {
     setSaveCount((prev) => prev + 1);
@@ -53,8 +55,9 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const handleTagChange = async ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
-    console.log(value);
+    // console.log(value);
     if (value) {
+      setTagText(value);
       try {
         const autoList = await checkHashKeyword(value);
         setAutoList(autoList);
@@ -65,7 +68,27 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       setAutoList([]);
     }
   };
-  console.log(autoList);
+  // console.log(autoList);
+
+  // tag 추가
+  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value;
+    // 3개까지만 가능하게 제한을 둔다.
+    if (tagList.length === 3) return;
+    setTagList((prev) => [...prev, value]);
+    setTagText("");
+  };
+
+  // tag 삭제
+  const handleDeleteTag = (idx: number) => {
+    setTagList((prev) =>
+      prev.filter((item) => {
+        return prev.indexOf(item) !== idx;
+      })
+    );
+  };
 
   useEffect(() => {
     let spans: null | Element[] = null;
@@ -122,7 +145,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     musicSelect: {
       // @ts-ignore
       onSelect: ({ name, src }) => {
-        setSelectedSongName(name)
+        setSelectedSongName(name);
         //TODO 음악 선택 후 처리
         alert(`${name}${src}`);
       },
@@ -133,6 +156,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         "musicSelect",
         "fontfamily",
         "fontsize",
+        "doubleQoute",
         "|",
         "bold",
         "underline",
@@ -156,37 +180,71 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       ],
       shouldNotGroupWhenFull: true,
     },
-    placeholder: "내용",
+    placeholder: "제목",
     // 업로드로더 API 요청 파라미터 전송
     uploadInfo: "pic",
   };
 
   return (
-    <div>
+    <div className="ckeditor__total__wrapper">
       <audio ref={audioRef} />
       <p>{selectedSongName}</p>
-      <CKEditor
-        ref={editorRef}
-        editor={ClassicEditor}
-        config={editorConfig}
-        data={data}
-        onChange={(event: any, editor: { getData: () => any }) => {
-          const data = editor.getData();
-          setData(data);
-          console.log(data);
-          if (onChange) onChange(data);
-        }}
-      />
-      <div style={{ position: "relative" }}>
-        <p>태그 자동완성 테스트</p>
-        <input onChange={handleTagChange} />
-        <ul className={"autoTagList"}>
-          {autoList.map((keyword) => {
-            return <li key={keyword}>{keyword}</li>;
-          })}
-        </ul>
+
+      <div className="ckeditor__wrapper">
+        <CKEditor
+          ref={editorRef}
+          editor={ClassicEditor}
+          config={editorConfig}
+          data={data}
+          onChange={(event: any, editor: { getData: () => any }) => {
+            const data = editor.getData();
+            setData(data);
+            console.log(data);
+            if (onChange) onChange(data);
+          }}
+        />
+
+        {/* tag */}
+        <div className="tag__wrapper">
+          <div className="tag__tags">
+            {tagList.map((tag, idx) => {
+              return (
+                <div className="tag__item" key={tag}>
+                  <span>#</span>
+                  <span>{tag}</span>
+                  <span
+                    className="tag__item__delete-btn"
+                    onClick={() => handleDeleteTag(idx)}
+                  >
+                    x
+                  </span>
+                </div>
+              );
+            })}
+
+            <div className="tag__input-and-autolist-wrapper">
+              <input
+                className="tag__input"
+                onChange={handleTagChange}
+                placeholder="# 키워드 입력(최대 3개)"
+                onKeyPress={(e) => handleAddtag(e)}
+                value={tagText || ""}
+              />
+
+              {/* recommendation */}
+              {autoList.length !== 0 && (
+                <ul className="autoTagList">
+                  {autoList.map((keyword) => {
+                    return <li key={keyword}>{keyword}</li>;
+                  })}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-      <div>
+
+      <div className="btn__wrapper">
         <button onClick={handleSave}>임시저장({saveCount})</button>
         <button onClick={getSaveData}>불러오기</button>
       </div>
