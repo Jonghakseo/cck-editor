@@ -177,7 +177,10 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
             <div className="tag__input-and-autolist-wrapper">
               <input
                 className="tag__input"
-                onChange={handleTagChange}
+                onChange={(e)=> {
+                  handleTagChange(e)
+                  setTagText(e.target.value)
+                }}
                 placeholder="# 키워드 입력(최대 3개)"
                 onKeyPress={(e) => handleAddtag(e)}
                 value={tagText || ""}
