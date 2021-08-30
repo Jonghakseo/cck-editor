@@ -1,9 +1,21 @@
-.autoTagList {
-  top: 0;
-  right: 0;
-  position: absolute;
+.ckeditor__total__wrapper {
+  padding-bottom: 1rem;
+  border: 1px solid gray;
+}
+.ckeditor__wrapper {
+  position: relative;
 }
 
+.ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+  border: none !important;
+}
+
+.ck.ck-toolbar {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid gray !important;
+}
 
 .ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li {
   display: flex !important;
@@ -15,7 +27,7 @@
   background-color: #eeeeee !important;
 }
 
-span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
+span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   display: none !important;
 }
 .ck-dropdown.ckeditor5-musicSelect-dropdown > div{
@@ -30,7 +42,6 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
   height: 24px !important;
   margin-left: auto !important;
   background: center / contain no-repeat url("./icon/check.svg") !important;
-
 }
 
 .ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button > span {
@@ -52,4 +63,84 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden{
   background: center / cover no-repeat url("./icon/play.svg") !important;
   width: 10px !important;
   height: 10px !important;
+}
+
+/* tag */
+.tag__input-and-autolist-wrapper {
+  position: relative;
+}
+
+.autoTagList {
+  top: 10px;
+  left: 0;
+  position: absolute;
+  list-style: none;
+  background-color: white;
+  border: solid 0.1px black;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 2px 2px 2px 2px #80808033;
+}
+
+.autoTagList > li {
+  text-align: left;
+  margin: 0 0 0.5rem 0;
+}
+.autoTagList > li:last-child {
+  margin: 0 0 -0.5rem 0;
+}
+
+.tag__wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateY(100%);
+  width: 100%;
+}
+
+.tag__input {
+  margin-left: 1rem;
+  outline: none;
+  border: none;
+}
+.tag__input:focus {
+  outline: none;
+}
+
+.tag__tags {
+  display: flex;
+}
+
+.tag__item {
+  border: solid 0.05px gray;
+  border-radius: 9999px;
+
+  padding: 0.1rem 0.3rem;
+  margin: 0 0.5rem 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.tag__item > span:nth-child(1) {
+  margin: 0 0 0 0.2rem;
+}
+.tag__item > span:nth-child(2) {
+  margin: -0.25rem 0 0 0.2rem;
+}
+.tag__item > span:nth-child(3) {
+  line-height: 0;
+  margin: -0.21rem 0.3rem 0 0.6rem;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.tag__item__delete-btn {
+  margin: 0 0 0 0.2rem;
+  cursor: pointer;
+  color: gray;
+  font-weight: bold;
+}
+
+.btn__wrapper {
+  margin: 3rem 0 0 0;
 }
