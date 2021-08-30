@@ -36,13 +36,14 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const editorRef = useRef<null | HTMLAudioElement>(null);
   const { audioRef, selectedSongName, handleMusicSelect } =
     useMusicSelect(SAMPLE_SONGS);
+  const [tagText, setTagText] = useState<string>("");
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const [data, setData] = useState(MOCK_DATA);
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
-  useAddLocation();
-
   const { handleTagChange, autoList } = useAutoComplete();
+  useAddLocation();
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -114,6 +115,26 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     uploadInfo: "pic",
   };
 
+  // tag 추가
+  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value;
+    // 3개까지만 가능하게 제한을 둔다.
+    if (tagList.length === 3) return;
+    setTagList((prev) => [...prev, value]);
+    setTagText("");
+  };
+
+  // tag 삭제
+  const handleDeleteTag = (idx: number) => {
+    setTagList((prev) =>
+      prev.filter((item) => {
+        return prev.indexOf(item) !== idx;
+      })
+    );
+  };
+
   return (
     <div className="ckeditor__total__wrapper">
       <audio ref={audioRef} />
@@ -136,7 +157,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         {/* tag */}
         <div className="tag__wrapper">
           <div className="tag__tags">
-            {/* {tagList.map((tag, idx) => {
+            {tagList.map((tag, idx) => {
               return (
                 <div className="tag__item" key={tag}>
                   <span>#</span>
@@ -149,25 +170,25 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
                   </span>
                 </div>
               );
-            })} */}
+            })}
 
             <div className="tag__input-and-autolist-wrapper">
-              {/* <input
+              <input
                 className="tag__input"
                 onChange={handleTagChange}
                 placeholder="# 키워드 입력(최대 3개)"
                 onKeyPress={(e) => handleAddtag(e)}
                 value={tagText || ""}
-              /> */}
+              />
 
               {/* recommendation */}
-              {/* {autoList.length !== 0 && (
+              {autoList.length !== 0 && (
                 <ul className="autoTagList">
                   {autoList.map((keyword) => {
                     return <li key={keyword}>{keyword}</li>;
                   })}
                 </ul>
-              )} */}
+              )}
             </div>
           </div>
         </div>
