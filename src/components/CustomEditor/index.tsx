@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // @ts-ignore
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
@@ -10,6 +10,8 @@ import useTempSave from "./hooks/useTempSave";
 import useAutoComplete from "./hooks/useAutoComplete";
 import URLS from "../../routes/urls";
 import useAddLocation from "./hooks/useAddLocation";
+import useMusicAndLocationSection from "./hooks/useMusicAndLocationSection";
+import ReactDOM from "react-dom";
 
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
@@ -46,6 +48,32 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const { location } = useAddLocation();
 
   const { handleTagChange, clearAutoList, autoList } = useAutoComplete();
+
+  // useMusicAndLocationSection(selectedSongName, location);
+
+  const addTag = (value: string) => {
+    setTagList((prev) => [...prev, value]);
+    setTagText("");
+    clearAutoList();
+  };
+  // tag 추가
+  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+      const target = e.target as HTMLInputElement;
+      const value = target.value;
+      // 3개까지만 가능하게 제한을 둔다.
+      if (tagList.length < 3) addTag(value);
+    }
+  };
+  // tag 삭제
+
+  const handleDeleteTag = (idx: number) => {
+    setTagList((prev) =>
+      prev.filter((item) => {
+        return prev.indexOf(item) !== idx;
+      })
+    );
+  };
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -86,6 +114,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       items: [
         "addLocation",
         "musicSelect",
+        "|",
         "fontfamily",
         "fontsize",
         "doubleQoute",
@@ -117,36 +146,23 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     uploadInfo: "pic",
   };
 
-  const addTag = (value: string) => {
-    setTagList((prev) => [...prev, value]);
-    setTagText("");
-    clearAutoList()
-  };
-  // tag 추가
-  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const target = e.target as HTMLInputElement;
-      const value = target.value;
-      // 3개까지만 가능하게 제한을 둔다.
-      if (tagList.length < 3) addTag(value);
-    }
-  };
-
-  // tag 삭제
-  const handleDeleteTag = (idx: number) => {
-    setTagList((prev) =>
-      prev.filter((item) => {
-        return prev.indexOf(item) !== idx;
-      })
-    );
-  };
+  const isShowLocationAndMusic = selectedSongName || location;
+  const locationAndMusic = (
+    <div id={"ckeditor__location__music"}>
+      {selectedSongName && <p id={"selected_music"}>{selectedSongName}</p>}
+      {location && <p id={"selected_location"}>{location?.title}</p>}
+    </div>
+  );
 
   return (
     <div className="ckeditor__total__wrapper">
       <audio ref={audioRef} />
-      <p>{selectedSongName}</p>
-      <p>{location?.title}</p>
-      <div className="ckeditor__wrapper">
+      <div
+        className={`ckeditor__wrapper${
+          isShowLocationAndMusic ? " expanded" : ""
+        }`}
+      >
+        {isShowLocationAndMusic && locationAndMusic}
         <CKEditor
           ref={editorRef}
           editor={ClassicEditor}
@@ -179,17 +195,18 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
             })}
 
             <div className="tag__input-and-autolist-wrapper">
-              {tagList.length < 3 &&
-              <input
-                className="tag__input"
-                onChange={(e) => {
-                  handleTagChange(e);
-                  setTagText(e.target.value);
-                }}
-                placeholder="# 키워드 입력(최대 3개)"
-                onKeyPress={(e) => handleAddtag(e)}
-                value={tagText || ""}
-              />}
+              {tagList.length < 3 && (
+                <input
+                  className="tag__input"
+                  onChange={(e) => {
+                    handleTagChange(e);
+                    setTagText(e.target.value);
+                  }}
+                  placeholder="# 키워드 입력(최대 3개)"
+                  onKeyPress={(e) => handleAddtag(e)}
+                  value={tagText || ""}
+                />
+              )}
               {/* recommendation */}
               {autoList.length !== 0 && (
                 <ul className="autoTagList">

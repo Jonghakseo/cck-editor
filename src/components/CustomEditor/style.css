@@ -1,9 +1,13 @@
 .ckeditor__total__wrapper {
+  position: relative;
   padding-bottom: 1rem;
   border: 1px solid gray;
 }
 .ckeditor__wrapper {
   position: relative;
+}
+.ck.ck-editor__main > div:focus{
+  border: none !important;
 }
 
 .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
@@ -144,4 +148,40 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
 
 .btn__wrapper {
   margin: 3rem 0 0 0;
+}
+
+.ckeditor5-musicSelect-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow{
+  display: none;
+}
+.ckeditor5-addLocation-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow{
+  display: none;
+}
+svg.ck.ck-icon.ck-dropdown__arrow{
+  display: none;
+}
+
+.expanded > .ck > .ck.ck-editor__main{
+  padding-top: 50px !important;
+}
+
+#ckeditor__location__music{
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 39px;
+  background-color: rgba(255, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  height: 26px;
+  width: calc(100% - 24px);
+  border-bottom: 1px solid gray;
+  padding: 12px;
+}
+#selected_music{
+  margin: 0;
+  font-size: 18px;
+}
+#selected_location{
+  margin: 0;
+  font-size: 18px;
 }

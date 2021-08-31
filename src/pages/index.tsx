@@ -16,5 +16,5 @@ MainPage.defaultProps = {};
 export default MainPage;
 
 const EditorWrapper = styled.section`
-  width: 800px;
+  width: 820px;
 `;
