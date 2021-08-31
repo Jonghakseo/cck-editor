@@ -83,6 +83,7 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
 }
 
 .autoTagList > li {
+  cursor: pointer;
   text-align: left;
   margin: 0 0 0.5rem 0;
 }

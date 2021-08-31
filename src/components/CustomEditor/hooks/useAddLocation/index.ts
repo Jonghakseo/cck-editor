@@ -4,10 +4,9 @@ export default function useAddLocation() {
   const [location, setLocation] = useState<any>();
   useEffect(() => {
     function handleMsg(e: any) {
-      if (e?.data) {
-
+      if (e?.data && typeof e.data === "string") {
         const data = JSON.parse(e.data);
-          console.log(e.data)
+        console.log(e.data);
         console.log(data);
         setLocation(data);
       }

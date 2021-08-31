@@ -43,9 +43,9 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
 
-  const {location} = useAddLocation()
+  const { location } = useAddLocation();
 
-  const { handleTagChange, autoList } = useAutoComplete();
+  const { handleTagChange, clearAutoList, autoList } = useAutoComplete();
 
   const editorConfig = {
     extraPlugins: [EditorUploadAdapterPlugin],
@@ -117,15 +117,19 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     uploadInfo: "pic",
   };
 
-  // tag 추가
-  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== "Enter") return;
-    const target = e.target as HTMLTextAreaElement;
-    const value = target.value;
-    // 3개까지만 가능하게 제한을 둔다.
-    if (tagList.length === 3) return;
+  const addTag = (value: string) => {
     setTagList((prev) => [...prev, value]);
     setTagText("");
+    clearAutoList()
+  };
+  // tag 추가
+  const handleAddtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const target = e.target as HTMLInputElement;
+      const value = target.value;
+      // 3개까지만 가능하게 제한을 둔다.
+      if (tagList.length < 3) addTag(value);
+    }
   };
 
   // tag 삭제
@@ -175,22 +179,26 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
             })}
 
             <div className="tag__input-and-autolist-wrapper">
+              {tagList.length < 3 &&
               <input
                 className="tag__input"
-                onChange={(e)=> {
-                  handleTagChange(e)
-                  setTagText(e.target.value)
+                onChange={(e) => {
+                  handleTagChange(e);
+                  setTagText(e.target.value);
                 }}
                 placeholder="# 키워드 입력(최대 3개)"
                 onKeyPress={(e) => handleAddtag(e)}
                 value={tagText || ""}
-              />
-
+              />}
               {/* recommendation */}
               {autoList.length !== 0 && (
                 <ul className="autoTagList">
                   {autoList.map((keyword) => {
-                    return <li key={keyword}>{keyword}</li>;
+                    return (
+                      <li key={keyword} onClick={() => addTag(keyword)}>
+                        {keyword}
+                      </li>
+                    );
                   })}
                 </ul>
               )}

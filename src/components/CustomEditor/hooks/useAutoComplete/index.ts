@@ -3,6 +3,7 @@ import { checkHashKeyword } from "../../../../apis/hashTag";
 
 export default function useAutoComplete() {
   const [autoList, setAutoList] = useState<string[]>([]);
+  const clearAutoList = () => setAutoList([]);
   const handleTagChange = async ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
@@ -18,5 +19,5 @@ export default function useAutoComplete() {
     }
   };
 
-  return { autoList, handleTagChange };
+  return { autoList, clearAutoList, handleTagChange };
 }
