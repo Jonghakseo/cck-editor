@@ -17,5 +17,5 @@ export default function useAddLocation() {
     return () => window.removeEventListener("message", handleMsg);
   }, []);
 
-  return { location };
+  return { setLocation, location };
 }

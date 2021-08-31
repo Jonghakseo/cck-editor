@@ -45,7 +45,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
 
-  const { location } = useAddLocation();
+  const { location,setLocation } = useAddLocation();
 
   const { handleTagChange, clearAutoList, autoList } = useAutoComplete();
 
@@ -80,7 +80,8 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     addLocation: {
       userLocation: "신당동",
       onClickUserLocation: ({ value }: any) => {
-        alert(value);
+        setLocation(value);
+        // alert(value);
       },
       onClickOpenMap: () => {
         window.open(
