@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 // @ts-ignore
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { EditorUploadAdapterPlugin } from "./plugins/EditorUploadAdapterPlugin";
@@ -11,7 +12,6 @@ import useAutoComplete from "./hooks/useAutoComplete";
 import URLS from "../../routes/urls";
 import useAddLocation from "./hooks/useAddLocation";
 import useMusicAndLocationSection from "./hooks/useMusicAndLocationSection";
-import ReactDOM from "react-dom";
 
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
@@ -45,14 +45,14 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
 
   const { getSaveData, handleSave, saveCount } = useTempSave(data, setData);
 
-  const { location,setLocation } = useAddLocation();
+  const { location, setLocation } = useAddLocation();
 
   const { handleTagChange, clearAutoList, autoList } = useAutoComplete();
 
   // useMusicAndLocationSection(selectedSongName, location);
 
   const addTag = (value: string) => {
-    setTagList((prev) => [...prev, value]);
+    setTagList((prev: string[]) => [...prev, value]);
     setTagText("");
     clearAutoList();
   };
@@ -65,10 +65,10 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       if (tagList.length < 3) addTag(value);
     }
   };
-  // tag 삭제
 
+  // tag 삭제
   const handleDeleteTag = (idx: number) => {
-    setTagList((prev) =>
+    setTagList((prev: string[]) =>
       prev.filter((item) => {
         return prev.indexOf(item) !== idx;
       })
@@ -119,6 +119,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         "fontfamily",
         "fontsize",
         "doubleQoute",
+        "frameQuote",
         "|",
         "bold",
         "underline",
@@ -180,7 +181,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         {/* tag */}
         <div className="tag__wrapper">
           <div className="tag__tags">
-            {tagList.map((tag, idx) => {
+            {tagList.map((tag: string, idx: number) => {
               return (
                 <div className="tag__item" key={tag}>
                   <span>#</span>
@@ -211,7 +212,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
               {/* recommendation */}
               {autoList.length !== 0 && (
                 <ul className="autoTagList">
-                  {autoList.map((keyword) => {
+                  {autoList.map((keyword: string) => {
                     return (
                       <li key={keyword} onClick={() => addTag(keyword)}>
                         {keyword}
