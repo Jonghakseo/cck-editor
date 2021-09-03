@@ -6,7 +6,34 @@
 .ckeditor__wrapper {
   position: relative;
 }
-.ck.ck-editor__main > div:focus{
+.expanded .ckeditor__title__wrapper {
+  top: 89px;
+}
+
+.ckeditor__title__wrapper {
+  display: flex;
+  justify-content: flex-start;
+
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 39px;
+  width: 96%;
+
+  border-bottom: solid 1px gainsboro;
+  margin: 0 1rem;
+}
+
+.ckeditor__title__input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 1rem 0;
+}
+
+.ck.ck-editor__main > div:focus {
   border: none !important;
 }
 
@@ -34,7 +61,7 @@
 span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   display: none !important;
 }
-.ck-dropdown.ckeditor5-musicSelect-dropdown > div{
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div {
   min-width: 180px;
 }
 .ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button {
@@ -150,38 +177,62 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   margin: 3rem 0 0 0;
 }
 
-.ckeditor5-musicSelect-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow{
+.ckeditor5-musicSelect-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow {
   display: none;
 }
-.ckeditor5-addLocation-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow{
+.ckeditor5-addLocation-dropdown > button > svg.ck.ck-icon.ck-dropdown__arrow {
   display: none;
 }
-svg.ck.ck-icon.ck-dropdown__arrow{
+svg.ck.ck-icon.ck-dropdown__arrow {
   display: none;
 }
 
-.expanded > .ck > .ck.ck-editor__main{
-  padding-top: 50px !important;
+.ck > .ck.ck-editor__main {
+  padding-top: 60px !important;
+}
+.expanded > .ck > .ck.ck-editor__main {
+  padding-top: 110px !important;
 }
 
-#ckeditor__location__music{
+#ckeditor__location__music {
   position: absolute;
   z-index: 1;
   left: 0;
   top: 39px;
-  background-color: rgba(255, 0, 0, 0.2);
   display: flex;
   align-items: center;
-  height: 26px;
+  height: 1.3rem;
   width: calc(100% - 24px);
   border-bottom: 1px solid gray;
   padding: 12px;
 }
-#selected_music{
+
+#selected_location {
+  display: flex;
+  align-items: center;
+  color: blue;
   margin: 0;
   font-size: 18px;
 }
-#selected_location{
+
+#selected_music {
+  display: flex;
+  align-items: center;
+  color: #4ac583;
   margin: 0;
   font-size: 18px;
+  margin-left: 1rem;
+}
+
+.ckeditor__location__music__icon {
+  width: 1rem;
+  margin-right: 0.2rem;
+  fill: currentColor;
+}
+
+.ckeditor__location__music__cancel-btn {
+  margin: -0.2rem 0 0 0.5rem;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
 }

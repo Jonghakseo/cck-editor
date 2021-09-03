@@ -13,6 +13,10 @@ import URLS from "../../routes/urls";
 import useAddLocation from "./hooks/useAddLocation";
 import useMusicAndLocationSection from "./hooks/useMusicAndLocationSection";
 
+// svg icons
+import LocationIcon from "./icon/maps-and-flags.svg";
+import MusicIcon from "./icon/musical-note.svg";
+
 const ClassicEditor = require("../../ckeditor/build/ckeditor");
 
 export interface Props {
@@ -36,8 +40,13 @@ const SAMPLE_SONGS = [
 
 const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const editorRef = useRef<null | HTMLAudioElement>(null);
-  const { audioRef, selectedSongName, handleMusicSelect } =
-    useMusicSelect(SAMPLE_SONGS);
+  const {
+    audioRef,
+    selectedSongName,
+    handleMusicSelect,
+    handleResetMusicSelect,
+  } = useMusicSelect(SAMPLE_SONGS);
+  const [title, setTitle] = useState<string>("");
   const [tagText, setTagText] = useState<string>("");
   const [tagList, setTagList] = useState<string[]>([]);
 
@@ -50,6 +59,10 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const { handleTagChange, clearAutoList, autoList } = useAutoComplete();
 
   // useMusicAndLocationSection(selectedSongName, location);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
+  };
 
   const addTag = (value: string) => {
     setTagList((prev: string[]) => [...prev, value]);
@@ -151,8 +164,92 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   const isShowLocationAndMusic = selectedSongName || location;
   const locationAndMusic = (
     <div id={"ckeditor__location__music"}>
-      {selectedSongName && <p id={"selected_music"}>{selectedSongName}</p>}
-      {location && <p id={"selected_location"}>{location?.title}</p>}
+      {location && (
+        <p id={"selected_location"}>
+          <svg
+            className="ckeditor__location__music__icon"
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 512 512"
+          >
+            <g>
+              <g>
+                <path
+                  d="M256,0C153.755,0,70.573,83.182,70.573,185.426c0,126.888,165.939,313.167,173.004,321.035
+			c6.636,7.391,18.222,7.378,24.846,0c7.065-7.868,173.004-194.147,173.004-321.035C441.425,83.182,358.244,0,256,0z M256,278.719
+			c-51.442,0-93.292-41.851-93.292-93.293S204.559,92.134,256,92.134s93.291,41.851,93.291,93.293S307.441,278.719,256,278.719z"
+                />
+              </g>
+            </g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+          </svg>
+
+          <span>{location?.title}</span>
+          <span
+            className="ckeditor__location__music__cancel-btn"
+            onClick={() => setLocation(null)}
+          >
+            x
+          </span>
+        </p>
+      )}
+      {selectedSongName && (
+        <p id={"selected_music"}>
+          {/* <img
+            src={MusicIcon}
+            alt="song icon"
+            className="ckeditor__location__music__icon"
+          /> */}
+          <svg
+            className="ckeditor__location__music__icon"
+            id="Capa_1"
+            enable-background="new 0 0 448 448"
+            viewBox="0 0 448 448"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m442.016 3.5c-3.744-3.04-8.672-4.096-13.472-3.136l-288 64c-7.328 1.632-12.544 8.128-12.544 15.616v253.12c-13.408-8.128-29.92-13.12-48-13.12-44.096 0-80 28.704-80 64s35.904 64 80 64 80-28.704 80-64v-195.168l256-56.896v137.184c-13.408-8.128-29.92-13.12-48-13.12-44.128 0-80 28.704-80 64s35.872 64 80 64 80-28.704 80-64v-304c0-4.864-2.176-9.44-5.984-12.48z" />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+            <g />
+          </svg>
+          <span>{selectedSongName}</span>
+          <span
+            className="ckeditor__location__music__cancel-btn"
+            onClick={handleResetMusicSelect}
+          >
+            x
+          </span>
+        </p>
+      )}
     </div>
   );
 
@@ -164,7 +261,18 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
           isShowLocationAndMusic ? " expanded" : ""
         }`}
       >
+        <div className="ckeditor__title__wrapper">
+          <input
+            className="ckeditor__title__input"
+            type="text"
+            onChange={(e) => handleTitleChange(e)}
+            value={title}
+            placeholder="제목"
+          />
+        </div>
+
         {isShowLocationAndMusic && locationAndMusic}
+
         <CKEditor
           ref={editorRef}
           editor={ClassicEditor}

@@ -48,5 +48,16 @@ export default function useMusicSelect(
     alert(`${name}${src}`);
   };
 
-  return { audioRef, selectedSongName, handleMusicSelect };
+  const handleResetMusicSelect = () => {
+    setSelectedSongName("");
+    audioRef.current = null;
+    musicListRef.current = null;
+  };
+
+  return {
+    audioRef,
+    selectedSongName,
+    handleMusicSelect,
+    handleResetMusicSelect,
+  };
 }
