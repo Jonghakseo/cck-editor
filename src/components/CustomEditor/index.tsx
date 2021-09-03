@@ -93,8 +93,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     addLocation: {
       userLocation: "신당동",
       onClickUserLocation: ({ value }: any) => {
-        setLocation(value);
-        // alert(value);
+        setLocation({ title: value });
       },
       onClickOpenMap: () => {
         window.open(
