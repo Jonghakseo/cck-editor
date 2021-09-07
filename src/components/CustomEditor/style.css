@@ -72,6 +72,7 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   max-height: 12px !important;
   height: 24px !important;
   margin-left: auto !important;
+  cursor: pointer;
   background: center / contain no-repeat url("./icon/check.svg") !important;
 }
 
@@ -94,6 +95,10 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   background: center / cover no-repeat url("./icon/play.svg") !important;
   width: 10px !important;
   height: 10px !important;
+}
+
+.ck-dropdown.ckeditor5-musicSelect-dropdown > div > ul > li > button.playing :after {
+  background: center / cover no-repeat url("./icon/pause.svg") !important;
 }
 
 /* tag */
