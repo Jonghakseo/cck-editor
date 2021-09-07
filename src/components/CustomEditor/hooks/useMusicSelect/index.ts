@@ -26,10 +26,17 @@ export default function useMusicSelect(
       const songName = target?.innerText;
       const foundSong = songList.find(({ name }) => name === songName);
       if (audio) {
-        console.log(foundSong?.name)
+
         // ! 음악 재생중이 아닐 때
         allPauseIconToPlayIcon()
         console.log(target)
+        if (selectedSongName === foundSong?.name){
+          if (audio.played){
+            return audio.pause()
+          }else{
+            return audio.play()
+          }
+        }
         target.parentElement.classList.add("playing")
         audio.src = foundSong?.src || "";
         audio.play();
