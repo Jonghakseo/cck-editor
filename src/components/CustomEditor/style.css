@@ -101,7 +101,7 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   position: relative;
 }
 
-.autoTagList {
+.auto-tag-list {
   top: 10px;
   left: 0;
   position: absolute;
@@ -113,13 +113,32 @@ span.ck.ck-tooltip.ck-tooltip_s.ck-hidden {
   box-shadow: 2px 2px 2px 2px #80808033;
 }
 
-.autoTagList > li {
+.auto-tag-list > li {
   cursor: pointer;
   text-align: left;
   margin: 0 0 0.5rem 0;
 }
-.autoTagList > li:last-child {
+.auto-tag-list > li:last-child {
   margin: 0 0 -0.5rem 0;
+}
+.auto-tag-list__item {
+  display: flex;
+  align-items: center;
+}
+.auto-tag-list__item__text {
+}
+.auto-tag-list__item__text .included {
+  font-weight: bold;
+}
+
+.auto-tag-list__item__count__div {
+  color: #0079ff;
+  font-size: 0.8rem;
+  margin-top: 0.1rem;
+}
+
+.auto-tag-list__item__plus-sign {
+  margin-left: 0.25rem;
 }
 
 .tag__wrapper {

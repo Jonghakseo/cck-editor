@@ -23,6 +23,11 @@ export interface Props {
   onChange?: (data: any) => any;
 }
 
+interface TagListType {
+  text: string;
+  count: number;
+}
+
 const SAMPLE_SONGS = [
   {
     name: "시끄러운 알람소리",
@@ -48,7 +53,7 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
   } = useMusicSelect(SAMPLE_SONGS);
   const [title, setTitle] = useState<string>("");
   const [tagText, setTagText] = useState<string>("");
-  const [tagList, setTagList] = useState<string[]>([]);
+  const [tagList, setTagList] = useState<TagListType[]>([]);
 
   const [data, setData] = useState(MOCK_DATA);
 
@@ -64,8 +69,9 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
     setTitle(e.target.value);
   };
 
-  const addTag = (value: string) => {
-    setTagList((prev: string[]) => [...prev, value]);
+  const addTag = (value: TagListType) => {
+    setTagList((prev: TagListType[]) => [...prev, value]);
+    // setTagList((prev: string[]) => [...prev, value]);
     setTagText("");
     clearAutoList();
   };
@@ -75,13 +81,15 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
       const target = e.target as HTMLInputElement;
       const value = target.value;
       // 3개까지만 가능하게 제한을 둔다.
-      if (tagList.length < 3) addTag(value);
+      // TODO: count 필요
+      if (tagList.length < 3) addTag({ text: value, count: 0 });
+      // if (tagList.length < 3) addTag(value);
     }
   };
 
   // tag 삭제
   const handleDeleteTag = (idx: number) => {
-    setTagList((prev: string[]) =>
+    setTagList((prev: TagListType[]) =>
       prev.filter((item) => {
         return prev.indexOf(item) !== idx;
       })
@@ -289,11 +297,11 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
         {/* tag */}
         <div className="tag__wrapper">
           <div className="tag__tags">
-            {tagList.map((tag: string, idx: number) => {
+            {tagList.map((tag: TagListType, idx: number) => {
               return (
-                <div className="tag__item" key={tag}>
+                <div className="tag__item" key={tag.text}>
                   <span>#</span>
-                  <span>{tag}</span>
+                  <span>{tag.text}</span>
                   <span
                     className="tag__item__delete-btn"
                     onClick={() => handleDeleteTag(idx)}
@@ -319,11 +327,38 @@ const CustomEditor: React.FC<Props> = ({ onChange }: Props) => {
               )}
               {/* recommendation */}
               {autoList.length !== 0 && (
-                <ul className="autoTagList">
-                  {autoList.map((keyword: string) => {
+                <ul className="auto-tag-list">
+                  {autoList.map((savedTag: TagListType) => {
                     return (
-                      <li key={keyword} onClick={() => addTag(keyword)}>
-                        {keyword}
+                      <li
+                        className="auto-tag-list__item"
+                        key={savedTag.text}
+                        onClick={() =>
+                          addTag({ text: savedTag.text, count: savedTag.count })
+                        }
+                      >
+                        {/* TODO: 입력한 글자랑 같은 글자들은 볼드처리해야함 */}
+                        <span className="auto-tag-list__item__text">
+                          {/* {savedTag.text} */}
+                          {savedTag.text.split("").map((text) => {
+                            return (
+                              <span
+                                className={`${
+                                  tagText.includes(text) ? "included" : null
+                                }`}
+                              >
+                                {text}
+                              </span>
+                            );
+                          })}
+                        </span>
+                        <span className="auto-tag-list__item__count__div auto-tag-list__item__plus-sign">
+                          +
+                        </span>
+                        <span className="auto-tag-list__item__count__div auto-tag-list__item__count">
+                          {savedTag.count}
+                        </span>
+                        <span></span>
                       </li>
                     );
                   })}
